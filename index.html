@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CropDoc AI - browser-based crop disease detection and farmer-friendly guidance.">
+  <title>CropDoc AI | Smart Crop Disease Detection</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="#home"><span class="brand-icon">🌿</span><span>CropDoc <b>AI</b></span></a>
+    <nav>
+      <a href="#analyze" data-i18n="navAnalyze">Analyze</a>
+      <a href="#how" data-i18n="navHow">How it works</a>
+      <a href="#chat" data-i18n="navAsk">Ask CropDoc</a>
+      <a href="#about" data-i18n="navAbout">About</a>
+    </nav>
+    <label class="language">
+      <span data-i18n="language">Language</span>
+      <select id="languageSelect" aria-label="Language">
+        <option value="en">English</option>
+        <option value="te">తెలుగు</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ta">தமிழ்</option>
+        <option value="kn">ಕನ್ನಡ</option>
+      </select>
+    </label>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow" data-i18n="eyebrow">AI-powered crop health assistant</span>
+        <h1 data-i18n="heroTitle">Detect crop diseases from a leaf photo.</h1>
+        <p data-i18n="heroText">Upload a clear crop-leaf image and CropDoc AI will analyze it in your browser and show the most likely disease classes.</p>
+        <a class="primary-btn" href="#analyze" data-i18n="startBtn">Start analysis</a>
+        <p class="hero-note" data-i18n="heroNote">Your image stays in your browser during analysis.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="leaf-orbit">🍃</div>
+        <div class="hero-card">
+          <span>AI</span>
+          <strong>Crop Health</strong>
+          <small>PlantVillage model</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="analyze" class="section">
+      <div class="section-heading">
+        <span class="eyebrow" data-i18n="analyzeEyebrow">Step 1</span>
+        <h2 data-i18n="analyzeTitle">Analyze a crop leaf</h2>
+        <p data-i18n="analyzeText">For better results, use a well-lit image where the leaf is easy to see.</p>
+      </div>
+
+      <div class="analyzer-grid">
+        <div class="upload-card card">
+          <input id="imageInput" type="file" accept="image/*" hidden>
+          <label for="imageInput" class="dropzone" id="dropzone">
+            <div class="upload-icon">📷</div>
+            <h3 data-i18n="uploadTitle">Upload leaf image</h3>
+            <p data-i18n="uploadText">Click here or drag and drop an image.</p>
+            <span class="file-hint" data-i18n="fileHint">JPG, PNG or WEBP</span>
+          </label>
+          <div class="preview-wrap hidden" id="previewWrap">
+            <img id="preview" alt="Selected crop leaf preview">
+            <button id="removeImage" class="text-btn" type="button" data-i18n="remove">Remove image</button>
+          </div>
+          <button id="analyzeBtn" class="primary-btn full" type="button" disabled data-i18n="analyzeBtn">Analyze with AI</button>
+          <div id="modelStatus" class="status" aria-live="polite"></div>
+        </div>
+
+        <div class="results-card card" id="resultsCard">
+          <div class="result-empty" id="resultEmpty">
+            <div class="result-icon">🔬</div>
+            <h3 data-i18n="resultWaiting">Your result will appear here</h3>
+            <p data-i18n="resultWaitingText">Upload a leaf image and start the AI analysis.</p>
+          </div>
+
+          <div id="resultContent" class="hidden">
+            <div class="result-top">
+              <div>
+                <span class="eyebrow" data-i18n="resultEyebrow">AI result</span>
+                <h2 id="diseaseName">—</h2>
+                <p id="cropName" class="crop-name">—</p>
+              </div>
+              <div class="confidence">
+                <span data-i18n="confidence">Confidence</span>
+                <strong id="confidenceValue">—</strong>
+              </div>
+            </div>
+
+            <div id="warning" class="warning hidden"></div>
+
+            <div class="info-grid">
+              <article>
+                <h3>📋 <span data-i18n="aboutDisease">About</span></h3>
+                <p id="diseaseDescription">—</p>
+              </article>
+              <article>
+                <h3>🔎 <span data-i18n="symptoms">Common symptoms</span></h3>
+                <p id="symptoms">—</p>
+              </article>
+              <article>
+                <h3>🛡️ <span data-i18n="prevention">Prevention</span></h3>
+                <p id="prevention">—</p>
+              </article>
+              <article>
+                <h3>🌱 <span data-i18n="management">General management</span></h3>
+                <p id="management">—</p>
+              </article>
+            </div>
+
+            <div class="top-predictions">
+              <h3 data-i18n="topPredictions">Top predictions</h3>
+              <div id="predictionList"></div>
+            </div>
+
+            <div class="voice-controls">
+              <button id="speakBtn" class="secondary-btn" type="button">🔊 <span data-i18n="listen">Listen</span></button>
+              <button id="pauseBtn" class="secondary-btn" type="button">⏸ <span data-i18n="pause">Pause</span></button>
+              <button id="stopBtn" class="secondary-btn" type="button">⏹ <span data-i18n="stop">Stop</span></button>
+            </div>
+            <p class="disclaimer" data-i18n="disclaimer">This is an AI screening tool, not a substitute for a local agricultural expert or laboratory diagnosis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section alt">
+      <div class="section-heading">
+        <span class="eyebrow" data-i18n="howEyebrow">Simple workflow</span>
+        <h2 data-i18n="howTitle">How CropDoc AI works</h2>
+      </div>
+      <div class="steps">
+        <article class="step card"><span>01</span><h3 data-i18n="step1Title">Upload</h3><p data-i18n="step1Text">Choose a clear crop-leaf photo.</p></article>
+        <article class="step card"><span>02</span><h3 data-i18n="step2Title">Analyze</h3><p data-i18n="step2Text">The PlantVillage-trained image model runs in your browser.</p></article>
+        <article class="step card"><span>03</span><h3 data-i18n="step3Title">Understand</h3><p data-i18n="step3Text">Read disease information, symptoms, prevention and general management.</p></article>
+        <article class="step card"><span>04</span><h3 data-i18n="step4Title">Listen</h3><p data-i18n="step4Text">Use voice playback in your selected language.</p></article>
+      </div>
+    </section>
+
+    <section id="chat" class="section">
+      <div class="section-heading">
+        <span class="eyebrow" data-i18n="chatEyebrow">Farmer-friendly help</span>
+        <h2 data-i18n="chatTitle">Ask CropDoc</h2>
+        <p data-i18n="chatText">Ask simple questions about the result or crop disease basics.</p>
+      </div>
+      <div class="chat card">
+        <div id="chatMessages" class="chat-messages" aria-live="polite">
+          <div class="bot-message" data-i18n="chatWelcome">Hello! Ask me about crop diseases, symptoms, prevention or your latest result.</div>
+        </div>
+        <form id="chatForm" class="chat-form">
+          <input id="chatInput" type="text" autocomplete="off" data-i18n-placeholder="chatPlaceholder" placeholder="Type your question...">
+          <button class="primary-btn" type="submit" data-i18n="send">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="about" class="section alt">
+      <div class="about-grid">
+        <div>
+          <span class="eyebrow" data-i18n="aboutEyebrow">About the project</span>
+          <h2 data-i18n="aboutTitle">Technology for easier crop-health screening.</h2>
+          <p data-i18n="aboutText">CropDoc AI combines an image-classification model with a simple multilingual interface so farmers and students can explore crop-health information more easily.</p>
+        </div>
+        <div class="about-points">
+          <div>⚡ <span data-i18n="aboutPoint1">Browser-based AI inference</span></div>
+          <div>🌐 <span data-i18n="aboutPoint2">Five-language interface</span></div>
+          <div>🔊 <span data-i18n="aboutPoint3">Voice-friendly guidance</span></div>
+          <div>📱 <span data-i18n="aboutPoint4">Responsive mobile design</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>🌿 CropDoc AI · <span data-i18n="footer">Educational AI screening prototype</span></p>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
