@@ -56,13 +56,13 @@
 
       <div class="analyzer-grid">
         <div class="upload-card card">
-          <input id="imageInput" class="file-input" type="file" accept="image/*">
-          <button type="button" class="dropzone upload-trigger" id="dropzone">
+          <input id="imageInput" type="file" accept="image/*" hidden>
+          <label for="imageInput" class="dropzone" id="dropzone">
             <div class="upload-icon">📷</div>
             <h3 data-i18n="uploadTitle">Upload leaf image</h3>
             <p data-i18n="uploadText">Click here or drag and drop an image.</p>
             <span class="file-hint" data-i18n="fileHint">JPG, PNG or WEBP</span>
-          </button>
+          </label>
           <div class="preview-wrap hidden" id="previewWrap">
             <img id="preview" alt="Selected crop leaf preview">
             <button id="removeImage" class="text-btn" type="button" data-i18n="remove">Remove image</button>

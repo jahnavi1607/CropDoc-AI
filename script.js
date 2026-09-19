@@ -179,10 +179,6 @@ $("removeImage").addEventListener("click", () => {
 
 analyzeBtn.addEventListener("click", analyze);
 
-// Open the file picker directly from a real button click. This is more reliable
-// on hosted sites such as GitHub Pages than relying only on a label/hidden input.
-$("dropzone").addEventListener("click", () => input.click());
-
 ["dragover","dragenter"].forEach(evt => $("dropzone").addEventListener(evt, e => {
   e.preventDefault(); $("dropzone").classList.add("dragging");
 }));
