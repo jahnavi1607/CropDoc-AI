@@ -1,6 +1,6 @@
 import { classifyImage, loadModel } from "./js/ai-model.js";
 import { diseaseData } from "./js/disease-data.js";
-import { translations, t } from "./js/translations.js";
+import { translations, diseaseTranslations, t } from "./js/translations.js";
 import { speak, pauseSpeaking, resumeSpeaking, stopSpeaking, isSupported } from "./js/voice.js";
 
 const $ = id => document.getElementById(id);
@@ -92,6 +92,14 @@ function findDisease(label) {
   return key2 ? diseaseData[key2] : null;
 }
 
+
+function localizeDisease(info) {
+  if (!info || lang === "en") return info;
+  const key = Object.keys(diseaseData).find(k => diseaseData[k] === info);
+  const localized = key ? diseaseTranslations[lang]?.[key] : null;
+  return localized ? { ...info, ...localized } : info;
+}
+
 function prettyLabel(label) {
   return label.replace(/___/g," — ").replace(/_/g," ").replace(/\s+/g," ").trim();
 }
@@ -118,7 +126,7 @@ function escapeHtml(value) {
 
 function showResult(results) {
   currentResult = results[0];
-  const info = findDisease(currentResult.label);
+  const info = localizeDisease(findDisease(currentResult.label));
   const confidence = chooseConfidence(currentResult);
   $("diseaseName").textContent = info?.name || prettyLabel(currentResult.label);
   $("cropName").textContent = info ? info.crop : "—";
@@ -204,7 +212,7 @@ languageSelect.addEventListener("change", () => {
 
 $("speakBtn").addEventListener("click", () => {
   if (!currentResult) return;
-  const info = findDisease(currentResult.label);
+  const info = localizeDisease(findDisease(currentResult.label));
   const text = [
     $("diseaseName").textContent,
     $("cropName").textContent,
@@ -233,7 +241,7 @@ function botReply(message) {
   }
   if (m.includes("healthy") || m.includes("ఆరోగ్య") || m.includes("स्वस्थ") || m.includes("ஆரோக்கிய") || m.includes("ಆರೋಗ್ಯ")) return t(lang,"healthyAnswer");
   if (currentResult && (m.includes("result") || m.includes("disease") || m.includes("వ్యాధి") || m.includes("रोग") || m.includes("நோய்") || m.includes("ರೋಗ"))) {
-    const info = findDisease(currentResult.label);
+    const info = localizeDisease(findDisease(currentResult.label));
     if (info) return `${info.name}: ${info.description} ${info.symptoms}`;
   }
   return t(lang,"chatFallback");

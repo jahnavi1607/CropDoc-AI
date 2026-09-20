@@ -1,6 +1,6 @@
 # CropDoc AI
 
-CropDoc AI is an AI-powered, browser-based crop disease detection platform designed to help farmers identify possible crop diseases from leaf images.
+CropDoc AI is a browser-based crop disease screening prototype for a college project.
 
 ## What it does
 
